@@ -77,12 +77,13 @@ pipeline {
     post {
         always {
             junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml, api-test/target/surefire-reports/*.xml, functional-test/target/surefire-reports/*.xml, functional-test/target/failsafe-reports/*.xml'
+            archiveArtifacts artifacts: 'target/tasks-backend.war, frontend/target/tasks.war', followSymlinks: false, onlyIfSuccessful: true
         }
         unsuccessful {
-            emailext attachLog: true, body: 'Veja o log em anexo', subject: 'Build $BUILD_NUMBER falhou', to: 'nanicomen+jenkins@gmail.com'
+            emailext attachLog: true, body: 'Veja o log em anexo', subject: 'Build $JOB_NAME $BUILD_NUMBER falhou', to: 'nanicomen+jenkins@gmail.com'
         }
         fixed {
-            emailext attachLog: true, body: 'Veja o log em anexo', subject: 'Build $BUILD_NUMBER foi corrigida!', to: 'nanicomen+jenkins@gmail.com'
+            emailext attachLog: true, body: 'Veja o log em anexo', subject: 'Build $BUILD_TAG foi corrigida!', to: 'nanicomen+jenkins@gmail.com'
         }
     }
 }
